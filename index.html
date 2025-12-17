@@ -543,7 +543,30 @@
             padding: 30px 0;
             font-size: 0.9rem;
             color: var(--cheese-brown);
+        }
+
+        footer p {
             opacity: 0.7;
+            margin-bottom: 15px;
+        }
+
+        .kofi-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #FF5E5B, #FFDD00);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 94, 91, 0.3);
+        }
+
+        .kofi-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 94, 91, 0.4);
         }
 
         /* Responsive */
@@ -631,7 +654,10 @@
         </div>
 
         <footer>
-            Made with 🧀 and love | A new cheese every day!
+            <p>Made with 🧀 and love | A new cheese every day!</p>
+            <a href="https://ko-fi.com/shiftclick" target="_blank" rel="noopener noreferrer" class="kofi-btn">
+                ☕ Buy me a coffee
+            </a>
         </footer>
     </div>
 
