@@ -265,6 +265,45 @@
         .legend-box.correct { background: var(--correct); }
         .legend-box.incorrect { background: var(--incorrect); }
 
+        /* Known clues tracker */
+        .known-clues {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(39, 174, 96, 0.05));
+            border: 2px solid var(--correct);
+            border-radius: 15px;
+            padding: 12px 15px;
+            margin: 15px 0;
+        }
+
+        .known-clues-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--correct);
+            margin-bottom: 8px;
+        }
+
+        .known-clues-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .known-clue-tag {
+            background: var(--correct);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .known-clue-tag .clue-label {
+            opacity: 0.85;
+        }
+
+        .known-clue-tag .clue-value {
+            font-weight: 600;
+        }
+
         /* Guesses display */
         .guesses-container {
             margin: 30px 0;
@@ -644,6 +683,11 @@
                 <div class="legend-box incorrect"></div>
                 <span>Incorrect</span>
             </div>
+        </div>
+
+        <div class="known-clues" id="known-clues" style="display: none;">
+            <div class="known-clues-title">✓ Known Clues</div>
+            <div class="known-clues-list" id="known-clues-list"></div>
         </div>
 
         <div class="guesses-container" id="guesses-container"></div>
@@ -1341,6 +1385,7 @@
                 gameState.dailyCheese = getDailyCheese();
                 renderGuesses();
                 updateGuessCounter();
+                updateKnownClues();
                 
                 if (gameState.gameOver) {
                     disableInput();
@@ -1500,6 +1545,7 @@
 
             renderGuesses();
             updateGuessCounter();
+            updateKnownClues();
             saveState();
 
             // Check win/lose
@@ -1589,6 +1635,51 @@
                     }
                 }
             });
+        }
+
+        // Update known clues tracker
+        function updateKnownClues() {
+            const container = document.getElementById('known-clues');
+            const list = document.getElementById('known-clues-list');
+            
+            if (gameState.guesses.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            // Collect all confirmed correct values
+            const knownClues = {};
+            const categories = ['country', 'milk', 'texture', 'color', 'flavor', 'aged', 'rind'];
+            const categoryLabels = {
+                country: 'Country',
+                milk: 'Milk',
+                texture: 'Texture',
+                color: 'Color',
+                flavor: 'Flavor',
+                aged: 'Aged',
+                rind: 'Rind'
+            };
+
+            gameState.guesses.forEach(guess => {
+                categories.forEach(cat => {
+                    if (guess.comparison[cat] && !knownClues[cat]) {
+                        knownClues[cat] = guess[cat];
+                    }
+                });
+            });
+
+            // Build the display
+            const clueEntries = Object.entries(knownClues);
+            
+            if (clueEntries.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            list.innerHTML = clueEntries.map(([cat, value]) => 
+                `<span class="known-clue-tag"><span class="clue-label">${categoryLabels[cat]}:</span> <span class="clue-value">${value}</span></span>`
+            ).join('');
         }
 
         // Disable input
