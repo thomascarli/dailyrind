@@ -1401,12 +1401,18 @@
             return shuffled;
         }
 
-        // Get days since start using UTC to avoid timezone issues
+        // Get days since start using Pacific Time (resets at midnight PT)
         function getDayNumber() {
-            const now = new Date();
-            const utcToday = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-            const startDate = Date.UTC(2024, 0, 1); // Jan 1, 2024 UTC
-            return Math.floor((utcToday - startDate) / (1000 * 60 * 60 * 24));
+            // Get current date in Pacific timezone
+            const pacificDate = new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            }); // Returns YYYY-MM-DD format
+            
+            const [year, month, day] = pacificDate.split('-').map(Number);
+            const todayPacific = Date.UTC(year, month - 1, day);
+            const startDate = Date.UTC(2024, 0, 1); // Jan 1, 2024
+            
+            return Math.floor((todayPacific - startDate) / (1000 * 60 * 60 * 24));
         }
 
         // Get daily cheese based on date with no repeats until full cycle
@@ -1435,7 +1441,10 @@
             // Check for saved state
             const savedState = localStorage.getItem('daily-rind-state');
             const savedDate = localStorage.getItem('daily-rind-date');
-            const today = new Date().toDateString();
+            // Use Pacific timezone for date comparison
+            const today = new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            });
 
             gameState.dailyCheese = getDailyCheese();
             document.getElementById('game-number').textContent = `Cheese #${getGameNumber()}`;
@@ -1808,7 +1817,10 @@
         // Save state
         function saveState() {
             localStorage.setItem('daily-rind-state', JSON.stringify(gameState));
-            localStorage.setItem('daily-rind-date', new Date().toDateString());
+            // Use Pacific timezone for date storage
+            localStorage.setItem('daily-rind-date', new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            }));
         }
 
         // Add shake animation
