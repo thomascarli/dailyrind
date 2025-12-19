@@ -1506,7 +1506,6 @@
                     autocompleteList.innerHTML = matches.slice(0, 8).map((cheese, idx) => `
                         <div class="autocomplete-item" data-name="${cheese.name}">
                             <div class="cheese-name">${cheese.name}</div>
-                            <div class="cheese-origin">${cheese.country}</div>
                         </div>
                     `).join('');
                     autocompleteList.classList.add('show');
