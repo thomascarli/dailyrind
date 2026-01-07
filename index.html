@@ -47,6 +47,10 @@
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
     <!-- Structured Data / JSON-LD -->
     <script type="application/ld+json">
     {
@@ -609,6 +613,96 @@
         }
 
         /* How to play */
+        /* Stats section */
+        .stats-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 25px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: none;
+        }
+
+        .stats-section.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        .stats-section h3 {
+            font-family: 'Boogaloo', cursive;
+            font-size: 1.5rem;
+            color: var(--cheese-orange);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stats-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-label {
+            width: 70px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--cheese-dark);
+        }
+
+        .stat-bar-container {
+            flex: 1;
+            height: 28px;
+            background: #f0ebe3;
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stat-bar {
+            height: 100%;
+            border-radius: 14px;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            min-width: 45px;
+        }
+
+        .stat-bar.win {
+            background: linear-gradient(135deg, var(--correct), #2ecc71);
+        }
+
+        .stat-bar.lose {
+            background: linear-gradient(135deg, var(--incorrect), #e57373);
+        }
+
+        .stat-percentage {
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .stats-total {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .stats-loading {
+            text-align: center;
+            padding: 15px;
+            color: #888;
+        }
+
         /* Feedback section */
         .feedback-section {
             background: white;
@@ -868,6 +962,30 @@
             <button class="learn-more-btn" id="learn-more-btn">🧀 Learn More About Today's Cheese 🧀</button>
         </div>
 
+        <div class="stats-section" id="stats-section">
+            <h3>📊 Today's Stats</h3>
+            <div class="stats-loading" id="stats-loading">Loading stats...</div>
+            <div class="stats-bars" id="stats-bars" style="display: none;">
+                <div class="stat-row">
+                    <span class="stat-label">🎉 Won</span>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar win" id="win-bar" style="width: 0%;">
+                            <span class="stat-percentage" id="win-percentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">😢 Lost</span>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar lose" id="lose-bar" style="width: 0%;">
+                            <span class="stat-percentage" id="lose-percentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-total" id="stats-total"></div>
+        </div>
+
         <div class="guesses-container" id="guesses-container"></div>
 
         <div class="how-to-play">
@@ -913,6 +1031,101 @@
     </div>
 
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPsE9i3yiHtKAKjrEJMU31T9WY-_yx9cc",
+            authDomain: "daily-rinds.firebaseapp.com",
+            databaseURL: "https://daily-rinds-default-rtdb.firebaseio.com",
+            projectId: "daily-rinds",
+            storageBucket: "daily-rinds.firebasestorage.app",
+            messagingSenderId: "1007021854176",
+            appId: "1:1007021854176:web:c0851aa006bcc1ed0bef85",
+            measurementId: "G-TF6L13Z4JW"
+        };
+
+        // Initialize Firebase
+        let database = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+        } catch (e) {
+            console.log('Firebase not configured yet');
+        }
+
+        // Stats functions
+        function getTodayKey() {
+            return new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            }).replace(/-/g, '');
+        }
+
+        async function reportGameResult(won) {
+            if (!database) return;
+            
+            const todayKey = getTodayKey();
+            const reportedKey = `daily-rind-reported-${todayKey}`;
+            
+            // Only report once per day
+            if (localStorage.getItem(reportedKey)) return;
+            
+            try {
+                const resultType = won ? 'wins' : 'losses';
+                const ref = database.ref(`stats/${todayKey}/${resultType}`);
+                await ref.transaction(current => (current || 0) + 1);
+                localStorage.setItem(reportedKey, 'true');
+            } catch (e) {
+                console.error('Error reporting stats:', e);
+            }
+        }
+
+        async function fetchAndDisplayStats() {
+            const statsSection = document.getElementById('stats-section');
+            const statsLoading = document.getElementById('stats-loading');
+            const statsBars = document.getElementById('stats-bars');
+            const statsTotal = document.getElementById('stats-total');
+            
+            statsSection.classList.add('show');
+            
+            if (!database) {
+                statsLoading.textContent = 'Stats unavailable';
+                return;
+            }
+            
+            try {
+                const todayKey = getTodayKey();
+                const snapshot = await database.ref(`stats/${todayKey}`).once('value');
+                const data = snapshot.val() || { wins: 0, losses: 0 };
+                
+                const wins = data.wins || 0;
+                const losses = data.losses || 0;
+                const total = wins + losses;
+                
+                if (total === 0) {
+                    statsLoading.textContent = 'Be the first to play today!';
+                    return;
+                }
+                
+                const winPercent = Math.round((wins / total) * 100);
+                const losePercent = Math.round((losses / total) * 100);
+                
+                statsLoading.style.display = 'none';
+                statsBars.style.display = 'flex';
+                
+                // Animate the bars
+                setTimeout(() => {
+                    document.getElementById('win-bar').style.width = `${Math.max(winPercent, 8)}%`;
+                    document.getElementById('win-percentage').textContent = `${winPercent}%`;
+                    document.getElementById('lose-bar').style.width = `${Math.max(losePercent, 8)}%`;
+                    document.getElementById('lose-percentage').textContent = `${losePercent}%`;
+                }, 100);
+                
+                statsTotal.textContent = `${total} player${total !== 1 ? 's' : ''} today`;
+            } catch (e) {
+                console.error('Error fetching stats:', e);
+                statsLoading.textContent = 'Could not load stats';
+            }
+        }
+
         // Cheese database
         const CHEESES = [
         {
@@ -2191,6 +2404,7 @@
                 
                 if (gameState.gameOver) {
                     disableInput();
+                    fetchAndDisplayStats();
                     if (gameState.won) {
                         setTimeout(() => showModal(true), 500);
                     } else {
@@ -2354,6 +2568,8 @@
                 gameState.won = true;
                 gameState.gameOver = true;
                 disableInput();
+                reportGameResult(true);
+                fetchAndDisplayStats();
                 setTimeout(() => {
                     createConfetti();
                     showModal(true);
@@ -2361,6 +2577,8 @@
             } else if (gameState.guesses.length >= gameState.maxGuesses) {
                 gameState.gameOver = true;
                 disableInput();
+                reportGameResult(false);
+                fetchAndDisplayStats();
                 setTimeout(() => showModal(false), 800);
             }
 
