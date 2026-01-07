@@ -44,6 +44,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Boogaloo&display=swap" rel="stylesheet">
     
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
     <!-- Structured Data / JSON-LD -->
     <script type="application/ld+json">
     {
@@ -606,6 +609,115 @@
         }
 
         /* How to play */
+        /* Feedback section */
+        .feedback-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .feedback-section h3 {
+            font-family: 'Boogaloo', cursive;
+            font-size: 1.6rem;
+            color: var(--cheese-orange);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .feedback-section p {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--cheese-dark);
+            font-size: 0.95rem;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            border: 2px solid #e0d5c7;
+            border-radius: 12px;
+            background: var(--cheese-cream);
+            color: var(--cheese-dark);
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-form textarea:focus {
+            border-color: var(--cheese-orange);
+            box-shadow: 0 0 15px rgba(230, 126, 34, 0.2);
+        }
+
+        .feedback-form textarea::placeholder {
+            color: #a89b8c;
+        }
+
+        .feedback-form input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            border: 2px solid #e0d5c7;
+            border-radius: 12px;
+            background: var(--cheese-cream);
+            color: var(--cheese-dark);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-form input[type="email"]:focus {
+            border-color: var(--cheese-orange);
+            box-shadow: 0 0 15px rgba(230, 126, 34, 0.2);
+        }
+
+        .feedback-form input[type="email"]::placeholder {
+            color: #a89b8c;
+        }
+
+        .feedback-submit {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--cheese-orange), var(--cheese-yellow));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            align-self: center;
+        }
+
+        .feedback-submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .feedback-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback-success {
+            text-align: center;
+            padding: 20px;
+            color: var(--correct);
+            font-weight: 500;
+        }
+
         .how-to-play {
             background: white;
             border-radius: 20px;
@@ -767,6 +879,19 @@
                 <li>Red means that category doesn't match</li>
                 <li>A new cheese is available every day!</li>
             </ul>
+        </div>
+
+        <div class="feedback-section">
+            <h3>📬 Send Feedback</h3>
+            <p>Have a suggestion, found a bug, or want a specific cheese added? Let me know!</p>
+            <form class="feedback-form" id="feedback-form">
+                <textarea name="message" id="feedback-message" placeholder="Your feedback, cheese suggestions, or just say hi! 🧀" required></textarea>
+                <input type="email" name="email" id="feedback-email" placeholder="Your email (optional, for replies)">
+                <button type="submit" class="feedback-submit">Send Feedback 🧀</button>
+            </form>
+            <div class="feedback-success" id="feedback-success" style="display: none;">
+                ✨ Thanks for your feedback! You're grate! 🧀
+            </div>
         </div>
 
         <footer>
@@ -2442,8 +2567,53 @@
         `;
         document.head.appendChild(style);
 
+        // Handle feedback form submission with EmailJS
+        // TODO: Replace these with your EmailJS credentials from https://emailjs.com
+        const EMAILJS_PUBLIC_KEY = 'OJMA7cpmSDGBtMicK';
+        const EMAILJS_SERVICE_ID = 'service_ikfbwrr';
+        const EMAILJS_TEMPLATE_ID = 'template_znqv3of';
+
+        function initFeedbackForm() {
+            // Initialize EmailJS
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+            
+            const form = document.getElementById('feedback-form');
+            const successMsg = document.getElementById('feedback-success');
+            
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = form.querySelector('.feedback-submit');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                
+                const templateParams = {
+                    message: document.getElementById('feedback-message').value,
+                    from_email: document.getElementById('feedback-email').value || 'Not provided'
+                };
+                
+                try {
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+                    form.style.display = 'none';
+                    successMsg.style.display = 'block';
+                    form.reset();
+                } catch (error) {
+                    console.error('EmailJS error:', error);
+                    submitBtn.textContent = 'Try Again';
+                    submitBtn.disabled = false;
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                    }, 2000);
+                }
+            });
+        }
+
         // Initialize on load
-        document.addEventListener('DOMContentLoaded', initGame);
+        document.addEventListener('DOMContentLoaded', () => {
+            initGame();
+            initFeedbackForm();
+        });
     </script>
 </body>
 </html>
