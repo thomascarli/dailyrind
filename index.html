@@ -2568,8 +2568,7 @@
                 gameState.won = true;
                 gameState.gameOver = true;
                 disableInput();
-                reportGameResult(true);
-                fetchAndDisplayStats();
+                reportGameResult(true).then(() => fetchAndDisplayStats());
                 setTimeout(() => {
                     createConfetti();
                     showModal(true);
@@ -2577,8 +2576,7 @@
             } else if (gameState.guesses.length >= gameState.maxGuesses) {
                 gameState.gameOver = true;
                 disableInput();
-                reportGameResult(false);
-                fetchAndDisplayStats();
+                reportGameResult(false).then(() => fetchAndDisplayStats());
                 setTimeout(() => showModal(false), 800);
             }
 
