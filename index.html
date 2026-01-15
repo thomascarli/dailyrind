@@ -812,6 +812,99 @@
             font-weight: 500;
         }
 
+        /* Changelog section */
+        .changelog-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .changelog-section h3 {
+            font-family: 'Boogaloo', cursive;
+            font-size: 1.6rem;
+            color: var(--cheese-orange);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .changelog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .changelog-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .changelog-list::-webkit-scrollbar-track {
+            background: #f0ebe3;
+            border-radius: 3px;
+        }
+
+        .changelog-list::-webkit-scrollbar-thumb {
+            background: var(--cheese-orange);
+            border-radius: 3px;
+        }
+
+        .changelog-list::-webkit-scrollbar-thumb:hover {
+            background: var(--cheese-brown);
+        }
+
+        .changelog-entry {
+            border-left: 3px solid var(--cheese-orange);
+            padding-left: 15px;
+        }
+
+        .changelog-date {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .changelog-title {
+            font-weight: 600;
+            color: var(--cheese-dark);
+            margin-bottom: 4px;
+        }
+
+        .changelog-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .changelog-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-right: 6px;
+            text-transform: uppercase;
+        }
+
+        .changelog-tag.new {
+            background: var(--correct);
+            color: white;
+        }
+
+        .changelog-tag.fix {
+            background: var(--cheese-orange);
+            color: white;
+        }
+
+        .changelog-tag.update {
+            background: #3498db;
+            color: white;
+        }
+
         .how-to-play {
             background: white;
             border-radius: 20px;
@@ -1009,6 +1102,52 @@
             </form>
             <div class="feedback-success" id="feedback-success" style="display: none;">
                 ✨ Thanks for your feedback! You're grate! 🧀
+            </div>
+        </div>
+
+        <div class="changelog-section">
+            <h3>📋 Changelog</h3>
+            <div class="changelog-list">
+                <div class="changelog-entry">
+                    <div class="changelog-date">January 14, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag new">New</span>
+                        Added changelog
+                    </div>
+                    <div class="changelog-description">
+                        Stay up to date with the latest changes and improvements to Daily Rinds!
+                    </div>
+                </div>
+                <div class="changelog-entry">
+                    <div class="changelog-date">January 14, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag new">New</span>
+                        Added daily stats feature
+                    </div>
+                    <div class="changelog-description">
+                        See how you compare to other players! After finishing a game, view the win/loss percentages for the day.
+                    </div>
+                </div>
+                <div class="changelog-entry">
+                    <div class="changelog-date">January 14, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag new">New</span>
+                        Added feedback form
+                    </div>
+                    <div class="changelog-description">
+                        Have a suggestion or found a bug? Use the new feedback form to let us know!
+                    </div>
+                </div>
+                <div class="changelog-entry">
+                    <div class="changelog-date">January 14, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag fix">Fix</span>
+                        Fixed blue cheese colors
+                    </div>
+                    <div class="changelog-description">
+                        Blue-veined cheeses now correctly display their color attribute.
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2042,7 +2181,7 @@
                 "country": "United States",
                 "milk": "Cow",
                 "texture": "Crumbly",
-                "color": "Pale Yellow",
+                "color": "Blue-Veined",
                 "aged": "No",
                 "rind": "Leaf",
                 "flavor": "Caramel",
@@ -2146,7 +2285,7 @@
                 "country": "England , Great Britain and United Kingdom",
                 "milk": "Cow",
                 "texture": "Creamy",
-                "color": "Ivory",
+                "color": "Blue-Veined",
                 "aged": "No",
                 "rind": "Mold",
                 "flavor": "Buttery",
@@ -2276,7 +2415,7 @@
                 "country": "France",
                 "milk": "Cow",
                 "texture": "Creamy",
-                "color": "Ivory",
+                "color": "Blue-Veined",
                 "aged": "No",
                 "rind": "Natural",
                 "flavor": "Buttery",
@@ -2289,7 +2428,7 @@
                 "country": "France",
                 "milk": "Cow",
                 "texture": "Creamy",
-                "color": "White",
+                "color": "Blue-Veined",
                 "aged": "No",
                 "rind": "Natural",
                 "flavor": "Creamy",
