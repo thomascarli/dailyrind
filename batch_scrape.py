@@ -4,9 +4,9 @@ Batch Cheese Scraper
 Scrape multiple cheeses from cheese.com
 
 Usage:
-  python batch_scrape.py <url1> <url2> <url3> ...
-  python batch_scrape.py --file urls.txt
-  python batch_scrape.py --output cheeses.json <url1> <url2>
+  python3 batch_scrape.py <url1> <url2> <url3> ...
+  python3 batch_scrape.py --file urls.txt
+  python3 batch_scrape.py --output cheeses.json <url1> <url2>
 """
 
 import sys
@@ -300,16 +300,16 @@ def main():
             i += 1
     
     if not urls:
-        print("Usage: python batch_scrape.py [--output FILE] [--delay SECONDS] <url1> <url2> ...")
-        print("   or: python batch_scrape.py --file urls.txt [--output FILE] [--delay SECONDS]")
+        print("Usage: python3 batch_scrape.py [--output FILE] [--delay SECONDS] <url1> <url2> ...")
+        print("   or: python3 batch_scrape.py --file urls.txt [--output FILE] [--delay SECONDS]")
         print("\nOptions:")
         print("  --file, -f FILE      Read URLs from file (one per line)")
         print("  --output, -o FILE    Save output to file")
         print("  --delay, -d SECONDS  Set delay between requests (default: 1.5-2.5s)")
         print("\nExample:")
-        print("  python batch_scrape.py https://www.cheese.com/brie/ https://www.cheese.com/cheddar/")
-        print("  python batch_scrape.py --file cheese_urls_A.txt --output cheeses.json")
-        print("  python batch_scrape.py --file urls.txt --delay 3.0  # Use 3-4 second delays")
+        print("  python3 batch_scrape.py https://www.cheese.com/brie/ https://www.cheese.com/cheddar/")
+        print("  python3 batch_scrape.py --file cheese_urls_A.txt --output cheeses.json")
+        print("  python3 batch_scrape.py --file urls.txt --delay 3.0  # Use 3-4 second delays")
         sys.exit(1)
     
     # Scrape all cheeses
