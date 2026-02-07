@@ -1109,6 +1109,16 @@
             <h3>📋 Changelog</h3>
             <div class="changelog-list">
                 <div class="changelog-entry">
+                    <div class="changelog-date">February 7, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag update">Update</span>
+                        Smarter color matching
+                    </div>
+                    <div class="changelog-description">
+                        Color comparisons are now more forgiving! Similar colors like "Pale Yellow" and "Yellow" or "Orange/Yellow" and "Orange" now count as correct.
+                    </div>
+                </div>
+                <div class="changelog-entry">
                     <div class="changelog-date">February 1, 2026</div>
                     <div class="changelog-title">
                         <span class="changelog-tag fix">Fix</span>
@@ -3012,13 +3022,52 @@
             saveState();
         }
 
+        // Normalize a color string into a set of base color families
+        function getColorFamilies(color) {
+            const families = new Set();
+            const lower = color.toLowerCase();
+
+            // Split on "/" for combination colors like "Orange/Yellow"
+            const parts = lower.split('/').map(p => p.trim());
+
+            for (const part of parts) {
+                if (part.includes('yellow') || part === 'ivory' || part.includes('golden')) {
+                    families.add('yellow');
+                } else if (part.includes('orange')) {
+                    families.add('orange');
+                } else if (part.includes('white') || part.includes('cream')) {
+                    families.add('white');
+                } else if (part.includes('blue')) {
+                    families.add('blue-veined');
+                } else {
+                    families.add(part);
+                }
+            }
+
+            return families;
+        }
+
+        // Check if two colors are close enough to count as correct
+        function colorsMatch(guessedColor, answerColor) {
+            if (guessedColor === answerColor) return true;
+
+            const guessedFamilies = getColorFamilies(guessedColor);
+            const answerFamilies = getColorFamilies(answerColor);
+
+            // If any base color family overlaps, it's a match
+            for (const family of guessedFamilies) {
+                if (answerFamilies.has(family)) return true;
+            }
+            return false;
+        }
+
         // Compare two cheeses
         function compareCheeses(guessed, answer) {
             return {
                 country: guessed.country === answer.country,
                 milk: guessed.milk === answer.milk,
                 texture: guessed.texture === answer.texture,
-                color: guessed.color === answer.color,
+                color: colorsMatch(guessed.color, answer.color),
                 flavor: guessed.flavor === answer.flavor,
                 aged: guessed.aged === answer.aged,
                 rind: guessed.rind === answer.rind
