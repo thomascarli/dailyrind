@@ -44,6 +44,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Boogaloo&display=swap" rel="stylesheet">
     
+    <!-- Noscript fallback for search engines and users without JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=https://dailyrinds.com/">
+    </noscript>
+
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
@@ -67,12 +72,39 @@
             "@type": "Offer",
             "price": "0",
             "priceCurrency": "USD"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "100"
         }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How do you play Daily Rinds?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Guess the mystery cheese in 6 tries. Each guess reveals clues about the cheese's country, milk type, texture, color, flavor, aging, and rind. Green means that category matches the answer, red means it doesn't. A new cheese is available every day!"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is Daily Rinds?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Daily Rinds is a free daily cheese guessing game, similar to Wordle but for cheese lovers. Players use clues about origin, milk type, texture, flavor and more to identify a mystery cheese each day."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is Daily Rinds free to play?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Daily Rinds is completely free to play. A new mystery cheese is available every day."
+                }
+            }
+        ]
     }
     </script>
     <style>
@@ -1000,10 +1032,25 @@
   gtag('config', 'G-TF6L13Z4JW');
 </script>
 <body>
+    <noscript>
+        <div style="max-width: 600px; margin: 40px auto; padding: 20px; font-family: sans-serif; text-align: center;">
+            <h1>🧀 Daily Rinds - The Daily Cheese Guessing Game</h1>
+            <p>Can you guess today's mystery cheese? Test your cheese knowledge with clues about origin, milk type, texture, flavor and more. A new cheese every day!</p>
+            <h2>How to Play</h2>
+            <ul style="text-align: left;">
+                <li>Guess the mystery cheese in 6 tries</li>
+                <li>Each guess reveals clues about the cheese</li>
+                <li>Green means that category matches the answer</li>
+                <li>Red means that category doesn't match</li>
+                <li>A new cheese is available every day!</li>
+            </ul>
+            <p><strong>Please enable JavaScript to play Daily Rinds.</strong></p>
+        </div>
+    </noscript>
     <div class="cheese-bg" id="cheese-bg"></div>
     <div class="confetti-container" id="confetti-container"></div>
 
-    <div class="container">
+    <main class="container">
         <header>
             <h1>🧀 Daily Rinds 🧀</h1>
             <p class="subtitle">Guess the daily mystery cheese!</p>
@@ -1197,7 +1244,7 @@
                 ☕ Buy me a coffee
             </a>
         </footer>
-    </div>
+    </main>
 
     <!-- Result Modal -->
     <div class="modal-overlay" id="modal-overlay">
