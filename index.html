@@ -1156,6 +1156,16 @@
             <h3>📋 Changelog</h3>
             <div class="changelog-list">
                 <div class="changelog-entry">
+                    <div class="changelog-date">February 16, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag update">Update</span>
+                        Smarter country matching
+                    </div>
+                    <div class="changelog-description">
+                        Country comparisons now handle combination entries! Guessing "England" when the answer is "England and United Kingdom" now correctly counts as a match.
+                    </div>
+                </div>
+                <div class="changelog-entry">
                     <div class="changelog-date">February 7, 2026</div>
                     <div class="changelog-title">
                         <span class="changelog-tag update">Update</span>
@@ -3108,10 +3118,30 @@
             return false;
         }
 
+        // Check if two country values match (handles combinations like "England and United Kingdom")
+        function countriesMatch(guessedCountry, answerCountry) {
+            if (guessedCountry === answerCountry) return true;
+
+            const normalize = (c) => c.trim().toLowerCase();
+
+            // Split on common separators: "and", "&", ",", "/"
+            const splitCountries = (str) =>
+                str.split(/\s+and\s+|\s*&\s*|\s*,\s*|\s*\/\s*/i).map(normalize).filter(Boolean);
+
+            const guessedParts = splitCountries(guessedCountry);
+            const answerParts = splitCountries(answerCountry);
+
+            // If any country from the guess appears in the answer (or vice versa), it's a match
+            for (const part of guessedParts) {
+                if (answerParts.includes(part)) return true;
+            }
+            return false;
+        }
+
         // Compare two cheeses
         function compareCheeses(guessed, answer) {
             return {
-                country: guessed.country === answer.country,
+                country: countriesMatch(guessed.country, answer.country),
                 milk: guessed.milk === answer.milk,
                 texture: guessed.texture === answer.texture,
                 color: colorsMatch(guessed.color, answer.color),
