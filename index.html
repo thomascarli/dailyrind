@@ -1158,6 +1158,16 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">February 21, 2026</div>
                     <div class="changelog-title">
+                        <span class="changelog-tag fix">Fix</span>
+                        Improved cheese search
+                    </div>
+                    <div class="changelog-description">
+                        Search now works with accented characters — typing "comte" finds Comté, "gruyere" finds Gruyère, and so on. Results are also sorted by relevance, with closest matches shown first.
+                    </div>
+                </div>
+                <div class="changelog-entry">
+                    <div class="changelog-date">February 21, 2026</div>
+                    <div class="changelog-title">
                         <span class="changelog-tag update">Update</span>
                         Smarter matching across all categories
                     </div>
@@ -1842,7 +1852,7 @@
                 aged: "No",
                 rind: "Washed",
                 flavor: "Strong",
-                image: "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400",
+                image: "https://cdn11.bigcommerce.com/s-2xe79qkdap/images/stencil/1280x1280/products/1805/3826/epoissesweb1__36205.1732026281.jpg?c=1",
                 description: "A pungent French cheese washed in brandy. So strong it's banned on public transport in France!"
             },
             {
@@ -2931,6 +2941,11 @@
             }
         }
 
+        // Normalize text: strip accents/diacritics and lowercase
+        function normalizeText(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
         // Setup event listeners
         function setupEventListeners() {
             const input = document.getElementById('cheese-input');
@@ -2941,7 +2956,7 @@
             let selectedIndex = -1;
 
             input.addEventListener('input', (e) => {
-                const value = e.target.value.toLowerCase();
+                const value = normalizeText(e.target.value);
                 selectedIndex = -1;
                 
                 if (value.length < 1) {
@@ -2949,10 +2964,19 @@
                     return;
                 }
 
-                const matches = uniqueCheeses.filter(cheese => 
-                    cheese.name.toLowerCase().includes(value) &&
-                    !gameState.guesses.some(g => g.name === cheese.name)
-                );
+                const matches = uniqueCheeses
+                    .filter(cheese => 
+                        normalizeText(cheese.name).includes(value) &&
+                        !gameState.guesses.some(g => g.name === cheese.name)
+                    )
+                    .sort((a, b) => {
+                        const aNorm = normalizeText(a.name);
+                        const bNorm = normalizeText(b.name);
+                        const aStarts = aNorm.startsWith(value) ? 0 : 1;
+                        const bStarts = bNorm.startsWith(value) ? 0 : 1;
+                        if (aStarts !== bStarts) return aStarts - bStarts;
+                        return aNorm.localeCompare(bNorm);
+                    });
 
                 if (matches.length > 0) {
                     autocompleteList.innerHTML = matches.slice(0, 8).map((cheese, idx) => `
@@ -3031,7 +3055,7 @@
             if (!guessName || gameState.gameOver) return;
 
             const guessedCheese = uniqueCheeses.find(c => 
-                c.name.toLowerCase() === guessName.toLowerCase()
+                normalizeText(c.name) === normalizeText(guessName)
             );
 
             if (!guessedCheese) {
