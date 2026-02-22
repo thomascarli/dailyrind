@@ -3118,36 +3118,49 @@
             return false;
         }
 
-        // Check if two country values match (handles combinations like "England and United Kingdom")
-        function countriesMatch(guessedCountry, answerCountry) {
-            if (guessedCountry === answerCountry) return true;
+        // Generic match for any category with combination values (e.g. "Cow/Sheep", "England and United Kingdom")
+        // Splits on "/", "and", "&", "," and checks if any part overlaps
+        function categoryContainsMatch(guessedVal, answerVal) {
+            if (guessedVal === answerVal) return true;
 
-            const normalize = (c) => c.trim().toLowerCase();
+            const normalize = (s) => s.trim().toLowerCase();
+            const splitParts = (str) =>
+                str.split(/\s*\/\s*|\s+and\s+|\s*&\s*|\s*,\s*/i).map(normalize).filter(Boolean);
 
-            // Split on common separators: "and", "&", ",", "/"
-            const splitCountries = (str) =>
-                str.split(/\s+and\s+|\s*&\s*|\s*,\s*|\s*\/\s*/i).map(normalize).filter(Boolean);
+            const guessedParts = splitParts(guessedVal);
+            const answerParts = splitParts(answerVal);
 
-            const guessedParts = splitCountries(guessedCountry);
-            const answerParts = splitCountries(answerCountry);
-
-            // If any country from the guess appears in the answer (or vice versa), it's a match
             for (const part of guessedParts) {
                 if (answerParts.includes(part)) return true;
             }
             return false;
         }
 
+        // Texture matching - handles combos + related textures
+        function texturesMatch(guessedTexture, answerTexture) {
+            if (categoryContainsMatch(guessedTexture, answerTexture)) return true;
+
+            // Group related textures together
+            const getTextureFamily = (t) => {
+                const lower = t.trim().toLowerCase();
+                if (['hard', 'semi-hard', 'firm'].includes(lower)) return 'hard-family';
+                if (['soft', 'semi-soft', 'creamy'].includes(lower)) return 'soft-family';
+                return lower;
+            };
+
+            return getTextureFamily(guessedTexture) === getTextureFamily(answerTexture);
+        }
+
         // Compare two cheeses
         function compareCheeses(guessed, answer) {
             return {
-                country: countriesMatch(guessed.country, answer.country),
-                milk: guessed.milk === answer.milk,
-                texture: guessed.texture === answer.texture,
+                country: categoryContainsMatch(guessed.country, answer.country),
+                milk: categoryContainsMatch(guessed.milk, answer.milk),
+                texture: texturesMatch(guessed.texture, answer.texture),
                 color: colorsMatch(guessed.color, answer.color),
-                flavor: guessed.flavor === answer.flavor,
+                flavor: categoryContainsMatch(guessed.flavor, answer.flavor),
                 aged: guessed.aged === answer.aged,
-                rind: guessed.rind === answer.rind
+                rind: categoryContainsMatch(guessed.rind, answer.rind)
             };
         }
 
