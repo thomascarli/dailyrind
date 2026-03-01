@@ -792,6 +792,444 @@
             box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
         }
 
+        /* Study Guide Button */
+        .study-guide-container {
+            text-align: center;
+            margin: 15px 0 20px 0;
+        }
+
+        .study-guide-btn {
+            position: relative;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
+            animation: subtlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(155, 89, 182, 0.6); }
+        }
+
+        .study-guide-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 25px rgba(155, 89, 182, 0.5);
+            animation: none;
+        }
+
+        .study-new-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Flashcard Modal */
+        .flashcard-modal {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            max-width: 450px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .flashcard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .flashcard-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #9b59b6;
+            font-family: 'Boogaloo', cursive;
+        }
+
+        .flashcard-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .flashcard-close:hover {
+            color: var(--cheese-dark);
+        }
+
+        /* Flashcard Intro Screen */
+        .flashcard-intro {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .intro-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .intro-text {
+            font-size: 1rem;
+            color: var(--cheese-dark);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .intro-shortcuts {
+            background: #f8f5f0;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .shortcut-title {
+            font-weight: 600;
+            color: #9b59b6;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .shortcut-key {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--cheese-dark);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .flashcard-start-btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
+        }
+
+        .flashcard-start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.5);
+        }
+
+        .flashcard-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background: #f8f5f0;
+            border-radius: 15px;
+        }
+
+        .flashcard-score {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .score-correct {
+            color: var(--correct);
+            margin-right: 5px;
+        }
+
+        .score-incorrect {
+            color: var(--incorrect);
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        .flashcard-counter {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* Flashcard Container */
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 380px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .flashcard-front {
+            background: linear-gradient(145deg, #fff8e7 0%, #ffe4b5 100%);
+            border: 3px solid var(--cheese-orange);
+        }
+
+        .flashcard-back {
+            background: linear-gradient(145deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 3px solid var(--correct);
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-hint {
+            font-size: 1.1rem;
+            color: var(--cheese-brown);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .flashcard-clues {
+            width: 100%;
+        }
+
+        .flashcard-clue {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 12px;
+            margin: 3px 0;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .clue-label {
+            color: #888;
+            font-weight: 500;
+        }
+
+        .clue-value {
+            color: var(--cheese-dark);
+            font-weight: 600;
+        }
+
+        .flashcard-tap-hint {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .flashcard-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+        }
+
+        .flashcard-name {
+            font-size: 1.5rem;
+            font-family: 'Boogaloo', cursive;
+            color: var(--cheese-dark);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .flashcard-description {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            line-height: 1.4;
+            max-height: 80px;
+            overflow-y: auto;
+            padding: 0 5px;
+        }
+
+        .flashcard-learn-more {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #9b59b6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .flashcard-learn-more:hover {
+            color: #8e44ad;
+            text-decoration: underline;
+        }
+
+        /* Flashcard Actions */
+        .flashcard-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .flashcard-btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flashcard-btn.correct {
+            background: var(--correct);
+            color: white;
+        }
+
+        .flashcard-btn.correct:hover {
+            background: #219a52;
+            transform: scale(1.02);
+        }
+
+        .flashcard-btn.incorrect {
+            background: var(--incorrect);
+            color: white;
+        }
+
+        .flashcard-btn.incorrect:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+        }
+
+        /* Flashcard Navigation */
+        .flashcard-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .flashcard-nav-btn {
+            flex: 1;
+            padding: 12px 18px;
+            font-size: 0.9rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            background: white;
+            color: #9b59b6;
+            border: 2px solid #9b59b6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flashcard-nav-btn:hover {
+            background: #9b59b6;
+            color: white;
+        }
+
+        /* Flashcard flip animation enhancement */
+        @keyframes cardPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .flashcard:not(.flipped):hover .flashcard-inner {
+            animation: cardPulse 1s ease infinite;
+        }
+
+        @media (max-width: 500px) {
+            .study-guide-btn {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                top: 10px;
+                right: 10px;
+            }
+
+            .flashcard-modal {
+                padding: 20px;
+            }
+
+            .flashcard {
+                height: 360px;
+            }
+
+            .flashcard-clue {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+
+            .flashcard-actions {
+                flex-direction: column;
+            }
+
+            .flashcard-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .flashcard-name {
+                font-size: 1.3rem;
+            }
+        }
+
         /* Confetti container */
         .confetti-container {
             position: fixed;
@@ -1232,6 +1670,14 @@
             <p class="game-number" id="game-number">Cheese #1</p>
         </header>
 
+        <!-- Study Guide Button -->
+        <div class="study-guide-container">
+            <button class="study-guide-btn" id="study-guide-btn">
+                <span class="study-new-badge">NEW</span>
+                📚 Study Mode — Learn Your Cheeses!
+            </button>
+        </div>
+
         <div class="search-container">
             <div class="search-wrapper">
                 <input 
@@ -1334,6 +1780,16 @@
         <div class="changelog-section">
             <h3>📋 Changelog</h3>
             <div class="changelog-list">
+                <div class="changelog-entry">
+                    <div class="changelog-date">February 28, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag new">New</span>
+                        Study Mode Flashcards
+                    </div>
+                    <div class="changelog-description">
+                        Practice your cheese knowledge with the new Study Mode! Flip through flashcards showing cheese clues and test yourself. Track your score and learn all the cheeses in the game.
+                    </div>
+                </div>
                 <div class="changelog-entry">
                     <div class="changelog-date">February 28, 2026</div>
                     <div class="changelog-title">
@@ -1483,6 +1939,71 @@
             <div class="browse-results-info" id="browse-results-info"></div>
             <div class="browse-cheese-list" id="browse-cheese-list"></div>
             <div class="browse-pagination" id="browse-pagination"></div>
+        </div>
+    </div>
+
+    <!-- Study Guide Flashcard Modal -->
+    <div class="modal-overlay" id="flashcard-modal-overlay">
+        <div class="flashcard-modal">
+            <div class="flashcard-header">
+                <h2>📚 Cheese Study Guide</h2>
+                <button class="flashcard-close" id="flashcard-close">&times;</button>
+            </div>
+
+            <!-- Intro Screen -->
+            <div class="flashcard-intro" id="flashcard-intro">
+                <div class="intro-icon">🧀</div>
+                <p class="intro-text">Test your cheese knowledge with flashcards! You'll see clues about a cheese — try to guess the name before flipping the card.</p>
+                
+                <div class="intro-shortcuts">
+                    <div class="shortcut-title">Keyboard Shortcuts</div>
+                    <div class="shortcut-item"><span class="shortcut-key">Space</span> Flip card</div>
+                    <div class="shortcut-item"><span class="shortcut-key">→</span> Next card</div>
+                    <div class="shortcut-item"><span class="shortcut-key">Y</span> Got it!</div>
+                    <div class="shortcut-item"><span class="shortcut-key">X</span> Didn't know</div>
+                </div>
+
+                <button class="flashcard-start-btn" id="flashcard-start">Start Studying 🧀</button>
+            </div>
+
+            <!-- Game Screen -->
+            <div class="flashcard-game" id="flashcard-game" style="display: none;">
+                <div class="flashcard-progress">
+                    <div class="flashcard-score">
+                        <span class="score-correct" id="score-correct">0</span> ✓
+                        <span class="score-incorrect" id="score-incorrect">0</span> ✗
+                    </div>
+                    <div class="flashcard-counter" id="flashcard-counter">Card 1</div>
+                </div>
+
+                <div class="flashcard-container" id="flashcard-container">
+                    <div class="flashcard" id="flashcard">
+                        <div class="flashcard-inner" id="flashcard-inner">
+                            <div class="flashcard-front" id="flashcard-front">
+                                <div class="flashcard-hint">🤔 What cheese is this?</div>
+                                <div class="flashcard-clues" id="flashcard-clues"></div>
+                                <div class="flashcard-tap-hint">Tap card to reveal answer</div>
+                            </div>
+                            <div class="flashcard-back" id="flashcard-back">
+                                <img class="flashcard-image" id="flashcard-image" src="" alt="Cheese">
+                                <div class="flashcard-name" id="flashcard-name"></div>
+                                <div class="flashcard-description" id="flashcard-description"></div>
+                                <a class="flashcard-learn-more" id="flashcard-learn-more" href="" target="_blank" rel="noopener noreferrer">Learn more →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-actions" id="flashcard-actions" style="display: none;">
+                    <button class="flashcard-btn incorrect" id="flashcard-incorrect">✗ Didn't Know</button>
+                    <button class="flashcard-btn correct" id="flashcard-correct">✓ Got It!</button>
+                </div>
+
+                <div class="flashcard-nav">
+                    <button class="flashcard-nav-btn" id="flashcard-reset">🔄 Reset</button>
+                    <button class="flashcard-nav-btn" id="flashcard-next">Next Card →</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -3574,6 +4095,189 @@
         `;
         document.head.appendChild(style);
 
+        // Flashcard Study Guide functionality
+        function initFlashcardStudy() {
+            const studyBtn = document.getElementById('study-guide-btn');
+            const overlay = document.getElementById('flashcard-modal-overlay');
+            const closeBtn = document.getElementById('flashcard-close');
+            const introScreen = document.getElementById('flashcard-intro');
+            const gameScreen = document.getElementById('flashcard-game');
+            const startBtn = document.getElementById('flashcard-start');
+            const flashcard = document.getElementById('flashcard');
+            const actionsDiv = document.getElementById('flashcard-actions');
+            const correctBtn = document.getElementById('flashcard-correct');
+            const incorrectBtn = document.getElementById('flashcard-incorrect');
+            const nextBtn = document.getElementById('flashcard-next');
+            const resetBtn = document.getElementById('flashcard-reset');
+
+            let deck = [];
+            let currentIndex = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let isFlipped = false;
+            let gameStarted = false;
+
+            function resetGame() {
+                deck = [...uniqueCheeses].sort(() => Math.random() - 0.5);
+                currentIndex = 0;
+                correctCount = 0;
+                incorrectCount = 0;
+                updateScore();
+                showCard();
+            }
+
+            function startGame() {
+                gameStarted = true;
+                introScreen.style.display = 'none';
+                gameScreen.style.display = 'block';
+                resetGame();
+            }
+
+            function showCard() {
+                if (deck.length === 0) return;
+
+                const cheese = deck[currentIndex];
+                isFlipped = false;
+                flashcard.classList.remove('flipped');
+                actionsDiv.style.display = 'none';
+
+                // Front side - clues (all categories)
+                const cluesHTML = `
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Country</span>
+                        <span class="clue-value">${cheese.country}</span>
+                    </div>
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Milk</span>
+                        <span class="clue-value">${cheese.milk}</span>
+                    </div>
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Texture</span>
+                        <span class="clue-value">${cheese.texture}</span>
+                    </div>
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Color</span>
+                        <span class="clue-value">${cheese.color}</span>
+                    </div>
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Flavor</span>
+                        <span class="clue-value">${cheese.flavor}</span>
+                    </div>
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Aged</span>
+                        <span class="clue-value">${cheese.aged}</span>
+                    </div>
+                    <div class="flashcard-clue">
+                        <span class="clue-label">Rind</span>
+                        <span class="clue-value">${cheese.rind}</span>
+                    </div>
+                `;
+                document.getElementById('flashcard-clues').innerHTML = cluesHTML;
+
+                // Back side - answer
+                document.getElementById('flashcard-image').src = cheese.image;
+                document.getElementById('flashcard-image').alt = cheese.name;
+                document.getElementById('flashcard-name').textContent = cheese.name;
+                document.getElementById('flashcard-description').textContent = cheese.description || '';
+                
+                // Learn more link
+                const learnMoreLink = document.getElementById('flashcard-learn-more');
+                if (cheese.url) {
+                    learnMoreLink.href = cheese.url;
+                    learnMoreLink.style.display = 'inline';
+                } else {
+                    learnMoreLink.style.display = 'none';
+                }
+
+                // Update counter
+                document.getElementById('flashcard-counter').textContent = `Card ${currentIndex + 1} of ${deck.length}`;
+            }
+
+            function flipCard() {
+                if (!gameStarted) return;
+                
+                isFlipped = !isFlipped;
+                if (isFlipped) {
+                    flashcard.classList.add('flipped');
+                    actionsDiv.style.display = 'flex';
+                } else {
+                    flashcard.classList.remove('flipped');
+                    actionsDiv.style.display = 'none';
+                }
+            }
+
+            function markCorrect() {
+                correctCount++;
+                updateScore();
+                nextCard();
+            }
+
+            function markIncorrect() {
+                incorrectCount++;
+                updateScore();
+                nextCard();
+            }
+
+            function updateScore() {
+                document.getElementById('score-correct').textContent = correctCount;
+                document.getElementById('score-incorrect').textContent = incorrectCount;
+            }
+
+            function nextCard() {
+                currentIndex = (currentIndex + 1) % deck.length;
+                showCard();
+            }
+
+            function openFlashcards() {
+                overlay.classList.add('show');
+                // Always show intro first
+                introScreen.style.display = 'block';
+                gameScreen.style.display = 'none';
+                gameStarted = false;
+            }
+
+            function closeFlashcards() {
+                overlay.classList.remove('show');
+            }
+
+            // Event listeners
+            studyBtn.addEventListener('click', openFlashcards);
+            closeBtn.addEventListener('click', closeFlashcards);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeFlashcards();
+            });
+
+            startBtn.addEventListener('click', startGame);
+            flashcard.addEventListener('click', flipCard);
+            correctBtn.addEventListener('click', markCorrect);
+            incorrectBtn.addEventListener('click', markIncorrect);
+            nextBtn.addEventListener('click', nextCard);
+            resetBtn.addEventListener('click', resetGame);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (!overlay.classList.contains('show')) return;
+                
+                if (e.key === 'Escape') {
+                    closeFlashcards();
+                } else if (!gameStarted && (e.key === ' ' || e.key === 'Enter')) {
+                    e.preventDefault();
+                    startGame();
+                } else if (gameStarted) {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        flipCard();
+                    } else if (e.key === 'ArrowRight' || e.key === 'n') {
+                        nextCard();
+                    } else if (isFlipped && (e.key === 'y' || e.key === '1')) {
+                        markCorrect();
+                    } else if (isFlipped && (e.key === 'x' || e.key === '2')) {
+                        markIncorrect();
+                    }
+                }
+            });
+        }
+
         // Browse Cheeses Modal functionality
         function initBrowseModal() {
             const browseBtn = document.getElementById('browse-cheeses-btn');
@@ -3757,6 +4461,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initGame();
             initBrowseModal();
+            initFlashcardStudy();
             initFeedbackForm();
         });
     </script>
