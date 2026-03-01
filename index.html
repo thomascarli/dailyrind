@@ -591,6 +591,181 @@
             box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
         }
 
+        /* Browse Cheeses Button */
+        .browse-btn-container {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .browse-btn {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            background: white;
+            color: var(--cheese-dark);
+            border: 2px solid var(--cheese-orange);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .browse-btn:hover {
+            background: var(--cheese-orange);
+            color: white;
+            transform: scale(1.02);
+        }
+
+        /* Browse Modal Styles */
+        .browse-modal {
+            max-width: 700px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .browse-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--cheese-cream);
+        }
+
+        .browse-modal-header h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: var(--cheese-orange);
+        }
+
+        .browse-modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .browse-modal-close:hover {
+            color: var(--cheese-dark);
+        }
+
+        .browse-search-container {
+            margin-bottom: 15px;
+        }
+
+        .browse-search-container input {
+            width: 100%;
+            padding: 12px 18px;
+            font-size: 1rem;
+            font-family: 'Fredoka', sans-serif;
+            border: 2px solid #e0d5c7;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .browse-search-container input:focus {
+            border-color: var(--cheese-orange);
+        }
+
+        .browse-results-info {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .browse-cheese-list {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 200px;
+            max-height: 350px;
+            border: 1px solid #f0ebe3;
+            border-radius: 15px;
+            background: #fdfcfa;
+        }
+
+        .browse-cheese-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #f0ebe3;
+            font-weight: 500;
+            color: var(--cheese-dark);
+        }
+
+        .browse-cheese-item:last-child {
+            border-bottom: none;
+        }
+
+        .browse-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .browse-pagination button {
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-family: 'Fredoka', sans-serif;
+            border: 2px solid var(--cheese-orange);
+            border-radius: 20px;
+            background: white;
+            color: var(--cheese-orange);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .browse-pagination button:hover:not(:disabled) {
+            background: var(--cheese-orange);
+            color: white;
+        }
+
+        .browse-pagination button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .browse-pagination button.active {
+            background: var(--cheese-orange);
+            color: white;
+        }
+
+        .browse-pagination .page-info {
+            font-size: 0.85rem;
+            color: #888;
+            padding: 0 10px;
+        }
+
+        .browse-no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+
+        .browse-no-results .emoji {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .browse-modal {
+                max-height: 90vh;
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .browse-cheese-list {
+                max-height: 300px;
+            }
+        }
+
         /* Learn more button */
         .learn-more-container {
             text-align: center;
@@ -1093,6 +1268,10 @@
             </div>
         </div>
 
+        <div class="browse-btn-container">
+            <button class="browse-btn" id="browse-cheeses-btn">📖 Browse All Cheeses</button>
+        </div>
+
         <div class="known-clues" id="known-clues" style="display: none;">
             <div class="known-clues-title">✓ Known Clues</div>
             <div class="known-clues-list" id="known-clues-list"></div>
@@ -1155,6 +1334,16 @@
         <div class="changelog-section">
             <h3>📋 Changelog</h3>
             <div class="changelog-list">
+                <div class="changelog-entry">
+                    <div class="changelog-date">February 28, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag new">New</span>
+                        Browse All Cheeses
+                    </div>
+                    <div class="changelog-description">
+                        Added a new "Browse All Cheeses" button to view the complete list of cheeses that can be guessed. Search by name to find specific cheeses!
+                    </div>
+                </div>
                 <div class="changelog-entry">
                     <div class="changelog-date">February 21, 2026</div>
                     <div class="changelog-title">
@@ -1273,6 +1462,27 @@
             <img class="cheese-image" id="cheese-image" src="" alt="Cheese">
             <div class="cheese-info" id="cheese-info"></div>
             <button class="modal-btn" id="modal-close">Close</button>
+        </div>
+    </div>
+
+    <!-- Browse Cheeses Modal -->
+    <div class="modal-overlay" id="browse-modal-overlay">
+        <div class="modal browse-modal" id="browse-modal">
+            <div class="browse-modal-header">
+                <h2>📖 All Cheeses</h2>
+                <button class="browse-modal-close" id="browse-modal-close">&times;</button>
+            </div>
+            <div class="browse-search-container">
+                <input 
+                    type="text" 
+                    id="browse-search" 
+                    placeholder="Search by name..."
+                    autocomplete="off"
+                >
+            </div>
+            <div class="browse-results-info" id="browse-results-info"></div>
+            <div class="browse-cheese-list" id="browse-cheese-list"></div>
+            <div class="browse-pagination" id="browse-pagination"></div>
         </div>
     </div>
 
@@ -3364,6 +3574,143 @@
         `;
         document.head.appendChild(style);
 
+        // Browse Cheeses Modal functionality
+        function initBrowseModal() {
+            const browseBtn = document.getElementById('browse-cheeses-btn');
+            const overlay = document.getElementById('browse-modal-overlay');
+            const closeBtn = document.getElementById('browse-modal-close');
+            const searchInput = document.getElementById('browse-search');
+
+            const ITEMS_PER_PAGE = 15;
+            let currentPage = 1;
+            let filteredCheeses = [];
+
+            // Filter cheeses by name search only
+            function filterCheeses() {
+                const searchTerm = normalizeText(searchInput.value);
+
+                filteredCheeses = uniqueCheeses.filter(cheese => {
+                    if (searchTerm) {
+                        return normalizeText(cheese.name).includes(searchTerm);
+                    }
+                    return true;
+                }).sort((a, b) => a.name.localeCompare(b.name));
+
+                currentPage = 1;
+                renderCheeseList();
+            }
+
+            // Render the cheese list with pagination
+            function renderCheeseList() {
+                const listContainer = document.getElementById('browse-cheese-list');
+                const paginationContainer = document.getElementById('browse-pagination');
+                const resultsInfo = document.getElementById('browse-results-info');
+
+                const totalPages = Math.ceil(filteredCheeses.length / ITEMS_PER_PAGE);
+                const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+                const endIdx = startIdx + ITEMS_PER_PAGE;
+                const pageItems = filteredCheeses.slice(startIdx, endIdx);
+
+                // Results info
+                if (filteredCheeses.length === 0) {
+                    resultsInfo.textContent = 'No cheeses found';
+                } else {
+                    resultsInfo.textContent = '';
+                }
+
+                // Render list
+                if (pageItems.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="browse-no-results">
+                            <div class="emoji">🧀</div>
+                            <p>No cheeses match your search.</p>
+                        </div>
+                    `;
+                } else {
+                    listContainer.innerHTML = pageItems.map(cheese => 
+                        `<div class="browse-cheese-item">${cheese.name}</div>`
+                    ).join('');
+                }
+
+                // Render pagination
+                if (totalPages <= 1) {
+                    paginationContainer.innerHTML = '';
+                } else {
+                    let paginationHTML = `
+                        <button ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">← Prev</button>
+                    `;
+
+                    // Show page numbers
+                    const maxVisiblePages = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                    
+                    if (endPage - startPage < maxVisiblePages - 1) {
+                        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                    }
+
+                    if (startPage > 1) {
+                        paginationHTML += `<button data-page="1">1</button>`;
+                        if (startPage > 2) paginationHTML += `<span class="page-info">...</span>`;
+                    }
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        paginationHTML += `<button class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                    }
+
+                    if (endPage < totalPages) {
+                        if (endPage < totalPages - 1) paginationHTML += `<span class="page-info">...</span>`;
+                        paginationHTML += `<button data-page="${totalPages}">${totalPages}</button>`;
+                    }
+
+                    paginationHTML += `
+                        <button ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next →</button>
+                    `;
+
+                    paginationContainer.innerHTML = paginationHTML;
+
+                    // Add pagination click handlers
+                    paginationContainer.querySelectorAll('button').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const page = parseInt(btn.dataset.page);
+                            if (page && page !== currentPage) {
+                                currentPage = page;
+                                renderCheeseList();
+                                listContainer.scrollTop = 0;
+                            }
+                        });
+                    });
+                }
+            }
+
+            function openBrowseModal() {
+                overlay.classList.add('show');
+                searchInput.value = '';
+                filterCheeses();
+                searchInput.focus();
+            }
+
+            function closeBrowseModal() {
+                overlay.classList.remove('show');
+            }
+
+            // Event listeners
+            browseBtn.addEventListener('click', openBrowseModal);
+            closeBtn.addEventListener('click', closeBrowseModal);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeBrowseModal();
+            });
+
+            searchInput.addEventListener('input', filterCheeses);
+
+            // Escape key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('show')) {
+                    closeBrowseModal();
+                }
+            });
+        }
+
         // Handle feedback form submission with EmailJS
         // TODO: Replace these with your EmailJS credentials from https://emailjs.com
         const EMAILJS_PUBLIC_KEY = 'OJMA7cpmSDGBtMicK';
@@ -3409,6 +3756,7 @@
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
             initGame();
+            initBrowseModal();
             initFeedbackForm();
         });
     </script>
