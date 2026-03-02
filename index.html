@@ -889,12 +889,6 @@
         .intro-icon {
             font-size: 4rem;
             margin-bottom: 15px;
-            animation: bounce 2s ease infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         .intro-text {
@@ -998,7 +992,7 @@
 
         .flashcard {
             width: 100%;
-            height: 380px;
+            height: 450px;
             cursor: pointer;
             position: relative;
         }
@@ -1055,11 +1049,44 @@
         .flashcard-clue {
             display: flex;
             justify-content: space-between;
-            padding: 6px 12px;
-            margin: 3px 0;
+            padding: 5px 10px;
+            margin: 2px 0;
             background: rgba(255,255,255,0.7);
             border-radius: 10px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+        }
+
+        .flashcard-hint-btn {
+            margin-top: 8px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            color: #9b59b6;
+            border: 1px dashed #9b59b6;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flashcard-hint-btn:hover {
+            background: rgba(155, 89, 182, 0.1);
+        }
+
+        .flashcard-hint-text {
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: rgba(155, 89, 182, 0.1);
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-style: italic;
+            color: #666;
+            line-height: 1.4;
+            max-height: 100px;
+            overflow-y: auto;
+            text-align: center;
+            border-left: 3px solid #9b59b6;
         }
 
         .clue-label {
@@ -1185,14 +1212,10 @@
             color: white;
         }
 
-        /* Flashcard flip animation enhancement */
-        @keyframes cardPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
+        /* Flashcard hover effect */
         .flashcard:not(.flipped):hover .flashcard-inner {
-            animation: cardPulse 1s ease infinite;
+            transform: scale(1.01);
+            transition: transform 0.2s ease;
         }
 
         @media (max-width: 500px) {
@@ -1208,12 +1231,17 @@
             }
 
             .flashcard {
-                height: 360px;
+                height: 430px;
             }
 
             .flashcard-clue {
-                padding: 5px 10px;
-                font-size: 0.8rem;
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+
+            .flashcard-hint-desc {
+                font-size: 0.75rem;
+                max-height: 50px;
             }
 
             .flashcard-actions {
@@ -1958,6 +1986,7 @@
                 <div class="intro-shortcuts">
                     <div class="shortcut-title">Keyboard Shortcuts</div>
                     <div class="shortcut-item"><span class="shortcut-key">Space</span> Flip card</div>
+                    <div class="shortcut-item"><span class="shortcut-key">H</span> Show hint</div>
                     <div class="shortcut-item"><span class="shortcut-key">→</span> Next card</div>
                     <div class="shortcut-item"><span class="shortcut-key">Y</span> Got it!</div>
                     <div class="shortcut-item"><span class="shortcut-key">X</span> Didn't know</div>
@@ -1982,6 +2011,8 @@
                             <div class="flashcard-front" id="flashcard-front">
                                 <div class="flashcard-hint">🤔 What cheese is this?</div>
                                 <div class="flashcard-clues" id="flashcard-clues"></div>
+                                <button class="flashcard-hint-btn" id="flashcard-hint-btn">💡 Need a hint?</button>
+                                <div class="flashcard-hint-text" id="flashcard-hint-text" style="display: none;"></div>
                                 <div class="flashcard-tap-hint">Tap card to reveal answer</div>
                             </div>
                             <div class="flashcard-back" id="flashcard-back">
@@ -4117,6 +4148,32 @@
             let isFlipped = false;
             let gameStarted = false;
 
+            // Redact cheese name from description for hints
+            function redactCheeseName(description, cheeseName) {
+                if (!description) return '';
+                
+                // Create variations of the name to redact
+                const nameParts = cheeseName.split(/[\s-]+/);
+                let redacted = description;
+                
+                // Redact full name first (case insensitive)
+                const fullNameRegex = new RegExp(cheeseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                redacted = redacted.replace(fullNameRegex, '???');
+                
+                // Redact individual significant parts (longer than 3 chars to avoid common words)
+                nameParts.forEach(part => {
+                    if (part.length > 3) {
+                        const partRegex = new RegExp('\\b' + part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+                        redacted = redacted.replace(partRegex, '???');
+                    }
+                });
+                
+                // Clean up multiple ??? in a row
+                redacted = redacted.replace(/(\?\?\?\s*)+/g, '??? ');
+                
+                return redacted.trim();
+            }
+
             function resetGame() {
                 deck = [...uniqueCheeses].sort(() => Math.random() - 0.5);
                 currentIndex = 0;
@@ -4173,6 +4230,15 @@
                     </div>
                 `;
                 document.getElementById('flashcard-clues').innerHTML = cluesHTML;
+
+                // Setup hint button
+                const hintBtn = document.getElementById('flashcard-hint-btn');
+                const hintText = document.getElementById('flashcard-hint-text');
+                const redactedDesc = redactCheeseName(cheese.description, cheese.name);
+                
+                hintBtn.style.display = redactedDesc ? 'inline-block' : 'none';
+                hintText.style.display = 'none';
+                hintText.textContent = redactedDesc ? `"${redactedDesc}"` : '';
 
                 // Back side - answer
                 document.getElementById('flashcard-image').src = cheese.image;
@@ -4254,6 +4320,15 @@
             nextBtn.addEventListener('click', nextCard);
             resetBtn.addEventListener('click', resetGame);
 
+            // Hint button - reveal description
+            document.getElementById('flashcard-hint-btn').addEventListener('click', (e) => {
+                e.stopPropagation(); // Don't flip the card
+                const hintBtn = document.getElementById('flashcard-hint-btn');
+                const hintText = document.getElementById('flashcard-hint-text');
+                hintBtn.style.display = 'none';
+                hintText.style.display = 'block';
+            });
+
             // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 if (!overlay.classList.contains('show')) return;
@@ -4269,6 +4344,14 @@
                         flipCard();
                     } else if (e.key === 'ArrowRight' || e.key === 'n') {
                         nextCard();
+                    } else if (e.key === 'h' && !isFlipped) {
+                        // Show hint
+                        const hintBtn = document.getElementById('flashcard-hint-btn');
+                        const hintText = document.getElementById('flashcard-hint-text');
+                        if (hintBtn.style.display !== 'none') {
+                            hintBtn.style.display = 'none';
+                            hintText.style.display = 'block';
+                        }
                     } else if (isFlipped && (e.key === 'y' || e.key === '1')) {
                         markCorrect();
                     } else if (isFlipped && (e.key === 'x' || e.key === '2')) {
