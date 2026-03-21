@@ -591,29 +591,58 @@
             box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
         }
 
-        /* Browse Cheeses Button */
-        .browse-btn-container {
-            text-align: center;
+        /* Action Buttons Row */
+        .action-buttons-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin: 15px 0;
+            flex-wrap: wrap;
         }
 
-        .browse-btn {
-            padding: 10px 20px;
-            font-size: 0.95rem;
+        .action-btn {
+            padding: 10px 16px;
+            font-size: 0.9rem;
             font-family: 'Fredoka', sans-serif;
             font-weight: 500;
             background: white;
-            color: var(--cheese-dark);
-            border: 2px solid var(--cheese-orange);
-            border-radius: 50px;
+            border: 2px solid;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .browse-btn:hover {
+        .action-btn.browse {
+            color: var(--cheese-dark);
+            border-color: var(--cheese-orange);
+        }
+
+        .action-btn.browse:hover {
             background: var(--cheese-orange);
             color: white;
-            transform: scale(1.02);
+            transform: scale(1.05);
+        }
+
+        .action-btn.archive {
+            color: #8e44ad;
+            border-color: #8e44ad;
+        }
+
+        .action-btn.archive:hover {
+            background: #8e44ad;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .action-btn.study {
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .action-btn.study:hover {
+            background: #27ae60;
+            color: white;
+            transform: scale(1.05);
         }
 
         /* Browse Modal Styles */
@@ -790,53 +819,6 @@
         .learn-more-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
-        }
-
-        /* Study Guide Button */
-        .study-guide-container {
-            text-align: center;
-            margin: 15px 0 20px 0;
-        }
-
-        .study-guide-btn {
-            position: relative;
-            padding: 12px 24px;
-            font-size: 0.95rem;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
-            animation: subtlePulse 3s ease-in-out infinite;
-        }
-
-        @keyframes subtlePulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4); }
-            50% { box-shadow: 0 4px 25px rgba(155, 89, 182, 0.6); }
-        }
-
-        .study-guide-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 25px rgba(155, 89, 182, 0.5);
-            animation: none;
-        }
-
-        .study-new-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #e74c3c;
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 10px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
         }
 
         /* Flashcard Modal */
@@ -1219,13 +1201,6 @@
         }
 
         @media (max-width: 500px) {
-            .study-guide-btn {
-                padding: 8px 14px;
-                font-size: 0.8rem;
-                top: 10px;
-                right: 10px;
-            }
-
             .flashcard-modal {
                 padding: 20px;
             }
@@ -1255,6 +1230,343 @@
 
             .flashcard-name {
                 font-size: 1.3rem;
+            }
+        }
+
+        /* Archive Mode Banner */
+        .archive-banner {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .archive-banner-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .archive-banner-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .archive-banner-date {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .archive-banner-btn {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            background: white;
+            color: #8e44ad;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .archive-banner-btn:hover {
+            background: #f8f4fc;
+            transform: scale(1.05);
+        }
+
+        /* Archive Modal */
+        .archive-modal {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            max-width: 420px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .archive-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--cheese-cream);
+        }
+
+        .archive-modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #8e44ad;
+            font-family: 'Boogaloo', cursive;
+        }
+
+        .archive-modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .archive-modal-close:hover {
+            color: var(--cheese-dark);
+        }
+
+        /* Calendar Navigation */
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-nav-btn {
+            padding: 8px 14px;
+            font-size: 1.2rem;
+            font-family: 'Fredoka', sans-serif;
+            background: #f5f0f8;
+            color: #8e44ad;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-nav-btn:hover:not(:disabled) {
+            background: #8e44ad;
+            color: white;
+        }
+
+        .calendar-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .calendar-month-year {
+            font-family: 'Boogaloo', cursive;
+            font-size: 1.3rem;
+            color: var(--cheese-dark);
+        }
+
+        /* Calendar Grid */
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .calendar-weekday {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #888;
+            padding: 5px 0;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: #f8f8f8;
+            border: 2px solid transparent;
+        }
+
+        .calendar-day:hover:not(.disabled):not(.future):not(.today-active) {
+            background: #f5f0f8;
+            border-color: #8e44ad;
+            transform: scale(1.05);
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        .calendar-day.disabled,
+        .calendar-day.future {
+            color: #ccc;
+            cursor: not-allowed;
+            background: #fafafa;
+        }
+
+        .calendar-day.today-active {
+            background: linear-gradient(135deg, var(--cheese-orange), var(--cheese-yellow));
+            color: white;
+            font-weight: 700;
+            cursor: default;
+        }
+
+        .calendar-day.played {
+            background: #e8f5e9;
+        }
+
+        .calendar-day.won {
+            background: #c8e6c9;
+        }
+
+        .calendar-day.won::after {
+            content: '✓';
+            position: absolute;
+            bottom: 2px;
+            right: 4px;
+            font-size: 0.6rem;
+            color: var(--correct);
+        }
+
+        .calendar-day.lost {
+            background: #ffebee;
+        }
+
+        .calendar-day.lost::after {
+            content: '✗';
+            position: absolute;
+            bottom: 2px;
+            right: 4px;
+            font-size: 0.6rem;
+            color: var(--incorrect);
+        }
+
+        .calendar-day-number {
+            font-size: 0.95rem;
+        }
+
+        /* Calendar Legend */
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+
+        .calendar-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .calendar-legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .calendar-legend-box.today {
+            background: linear-gradient(135deg, var(--cheese-orange), var(--cheese-yellow));
+        }
+
+        .calendar-legend-box.won {
+            background: #c8e6c9;
+        }
+
+        .calendar-legend-box.lost {
+            background: #ffebee;
+        }
+
+        .calendar-legend-box.unplayed {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+        }
+
+        /* Archive Stats Preview */
+        .archive-stats-preview {
+            background: #f8f4fc;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .archive-stats-title {
+            font-weight: 600;
+            color: #8e44ad;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .archive-stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .archive-stats-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .archive-stats-item.won {
+            color: var(--correct);
+        }
+
+        .archive-stats-item.lost {
+            color: var(--incorrect);
+        }
+
+        @media (max-width: 500px) {
+            .archive-modal {
+                padding: 20px;
+                max-width: 95%;
+            }
+
+            .calendar-day {
+                font-size: 0.8rem;
+            }
+
+            .calendar-day-number {
+                font-size: 0.85rem;
+            }
+
+            .calendar-month-year {
+                font-size: 1.1rem;
+            }
+
+            .archive-banner {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .calendar-legend {
+                gap: 10px;
+            }
+
+            .calendar-legend-item {
+                font-size: 0.7rem;
             }
         }
 
@@ -1647,6 +1959,15 @@
                 font-size: 2.8rem;
             }
 
+            .action-buttons-row {
+                gap: 8px;
+            }
+
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
             .search-wrapper {
                 flex-direction: column;
             }
@@ -1698,14 +2019,6 @@
             <p class="game-number" id="game-number">Cheese #1</p>
         </header>
 
-        <!-- Study Guide Button -->
-        <div class="study-guide-container">
-            <button class="study-guide-btn" id="study-guide-btn">
-                <span class="study-new-badge">NEW</span>
-                📚 Study Mode — Learn Your Cheeses!
-            </button>
-        </div>
-
         <div class="search-container">
             <div class="search-wrapper">
                 <input 
@@ -1742,8 +2055,19 @@
             </div>
         </div>
 
-        <div class="browse-btn-container">
-            <button class="browse-btn" id="browse-cheeses-btn">📖 Browse All Cheeses</button>
+        <div class="action-buttons-row">
+            <button class="action-btn browse" id="browse-cheeses-btn">📖 Browse Cheeses</button>
+            <button class="action-btn archive" id="archive-btn">📅 Past Games</button>
+            <button class="action-btn study" id="study-guide-btn">📚 Study Mode</button>
+        </div>
+
+        <!-- Archive Mode Banner (hidden by default) -->
+        <div class="archive-banner" id="archive-banner" style="display: none;">
+            <div class="archive-banner-info">
+                <div class="archive-banner-title" id="archive-banner-title">Playing Cheese #1</div>
+                <div class="archive-banner-date" id="archive-banner-date">January 1, 2024</div>
+            </div>
+            <button class="archive-banner-btn" id="return-to-today-btn">← Back to Today</button>
         </div>
 
         <div class="known-clues" id="known-clues" style="display: none;">
@@ -1808,6 +2132,16 @@
         <div class="changelog-section">
             <h3>📋 Changelog</h3>
             <div class="changelog-list">
+                <div class="changelog-entry">
+                    <div class="changelog-date">March 20, 2026</div>
+                    <div class="changelog-title">
+                        <span class="changelog-tag new">New</span>
+                        Play Past Games Archive
+                    </div>
+                    <div class="changelog-description">
+                        Missed a day? Now you can play any past cheese from the archive! Browse the calendar to see your history — green for wins, red for losses. Archive games don't count toward daily stats, so play stress-free!
+                    </div>
+                </div>
                 <div class="changelog-entry">
                     <div class="changelog-date">February 28, 2026</div>
                     <div class="changelog-title">
@@ -2033,6 +2367,68 @@
                 <div class="flashcard-nav">
                     <button class="flashcard-nav-btn" id="flashcard-reset">🔄 Reset</button>
                     <button class="flashcard-nav-btn" id="flashcard-next">Next Card →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Archive Calendar Modal -->
+    <div class="modal-overlay" id="archive-modal-overlay">
+        <div class="archive-modal">
+            <div class="archive-modal-header">
+                <h2>📅 Play Past Games</h2>
+                <button class="archive-modal-close" id="archive-modal-close">&times;</button>
+            </div>
+
+            <div class="calendar-nav">
+                <button class="calendar-nav-btn" id="calendar-prev">‹</button>
+                <span class="calendar-month-year" id="calendar-month-year">March 2026</span>
+                <button class="calendar-nav-btn" id="calendar-next">›</button>
+            </div>
+
+            <div class="calendar-weekdays">
+                <div class="calendar-weekday">Sun</div>
+                <div class="calendar-weekday">Mon</div>
+                <div class="calendar-weekday">Tue</div>
+                <div class="calendar-weekday">Wed</div>
+                <div class="calendar-weekday">Thu</div>
+                <div class="calendar-weekday">Fri</div>
+                <div class="calendar-weekday">Sat</div>
+            </div>
+
+            <div class="calendar-grid" id="calendar-grid"></div>
+
+            <div class="calendar-legend">
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-box today"></div>
+                    <span>Today</span>
+                </div>
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-box won"></div>
+                    <span>Won</span>
+                </div>
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-box lost"></div>
+                    <span>Lost</span>
+                </div>
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-box unplayed"></div>
+                    <span>Unplayed</span>
+                </div>
+            </div>
+
+            <div class="archive-stats-preview" id="archive-stats-preview">
+                <div class="archive-stats-title">Your Archive Progress</div>
+                <div class="archive-stats-row">
+                    <div class="archive-stats-item won">
+                        <span id="archive-won-count">0</span> won
+                    </div>
+                    <div class="archive-stats-item lost">
+                        <span id="archive-lost-count">0</span> lost
+                    </div>
+                    <div class="archive-stats-item">
+                        <span id="archive-total-count">0</span> available
+                    </div>
                 </div>
             </div>
         </div>
@@ -3839,7 +4235,10 @@
                 gameState.won = true;
                 gameState.gameOver = true;
                 disableInput();
-                reportGameResult(true).then(() => fetchAndDisplayStats());
+                // Only report stats for today's game, not archive games
+                if (!archiveMode.active) {
+                    reportGameResult(true).then(() => fetchAndDisplayStats());
+                }
                 setTimeout(() => {
                     createConfetti();
                     showModal(true);
@@ -3847,7 +4246,10 @@
             } else if (gameState.guesses.length >= gameState.maxGuesses) {
                 gameState.gameOver = true;
                 disableInput();
-                reportGameResult(false).then(() => fetchAndDisplayStats());
+                // Only report stats for today's game, not archive games
+                if (!archiveMode.active) {
+                    reportGameResult(false).then(() => fetchAndDisplayStats());
+                }
                 setTimeout(() => showModal(false), 800);
             }
 
@@ -4046,7 +4448,10 @@
         function disableInput() {
             document.getElementById('cheese-input').disabled = true;
             document.getElementById('guess-btn').disabled = true;
-            document.getElementById('learn-more-container').style.display = 'block';
+            // Only show "Learn More" button for today's game, not archive games
+            if (!archiveMode.active) {
+                document.getElementById('learn-more-container').style.display = 'block';
+            }
         }
 
         // Show modal
@@ -4107,11 +4512,21 @@
 
         // Save state
         function saveState() {
-            localStorage.setItem('daily-rind-state', JSON.stringify(gameState));
-            // Use Pacific timezone for date storage
-            localStorage.setItem('daily-rind-date', new Date().toLocaleDateString('en-CA', { 
-                timeZone: 'America/Los_Angeles' 
-            }));
+            if (archiveMode.active) {
+                // Save to archive-specific storage
+                saveArchiveState(archiveMode.dayNumber, {
+                    guesses: gameState.guesses,
+                    maxGuesses: gameState.maxGuesses,
+                    gameOver: gameState.gameOver,
+                    won: gameState.won
+                });
+            } else {
+                localStorage.setItem('daily-rind-state', JSON.stringify(gameState));
+                // Use Pacific timezone for date storage
+                localStorage.setItem('daily-rind-date', new Date().toLocaleDateString('en-CA', { 
+                    timeZone: 'America/Los_Angeles' 
+                }));
+            }
         }
 
         // Add shake animation
@@ -4498,6 +4913,400 @@
             });
         }
 
+        // Archive Mode functionality
+        let archiveMode = {
+            active: false,
+            dayNumber: null,
+            calendarMonth: null,
+            calendarYear: null
+        };
+
+        // Get cheese for any specific day number
+        function getCheeseForDay(dayNumber) {
+            const totalCheeses = uniqueCheeses.length;
+            const cycleNumber = Math.floor(dayNumber / totalCheeses);
+            const positionInCycle = dayNumber % totalCheeses;
+            const shuffledCheeses = seededShuffle(uniqueCheeses, cycleNumber + 12345);
+            return shuffledCheeses[positionInCycle];
+        }
+
+        // Convert day number to date string
+        function dayNumberToDate(dayNumber) {
+            const startDate = new Date(Date.UTC(2024, 0, 1));
+            const date = new Date(startDate.getTime() + dayNumber * 24 * 60 * 60 * 1000);
+            return date;
+        }
+
+        // Convert date to day number
+        function dateToDayNumber(year, month, day) {
+            const date = Date.UTC(year, month, day);
+            const startDate = Date.UTC(2024, 0, 1);
+            return Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
+        }
+
+        // Format date for display
+        function formatDateForDisplay(date) {
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'UTC'
+            });
+        }
+
+        // Get archive game state from localStorage
+        function getArchiveState(dayNumber) {
+            const key = `daily-rind-archive-${dayNumber}`;
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : null;
+        }
+
+        // Save archive game state
+        function saveArchiveState(dayNumber, state) {
+            const key = `daily-rind-archive-${dayNumber}`;
+            localStorage.setItem(key, JSON.stringify(state));
+        }
+
+        // Get all archive stats (only from Dec 2025 onwards)
+        function getArchiveStats() {
+            let won = 0;
+            let lost = 0;
+            const todayDayNumber = getDayNumber();
+            const archiveStartDayNumber = dateToDayNumber(2025, 11, 1);
+            
+            for (let i = archiveStartDayNumber; i < todayDayNumber; i++) {
+                const state = getArchiveState(i);
+                if (state && state.gameOver) {
+                    if (state.won) won++;
+                    else lost++;
+                }
+            }
+            
+            const totalAvailable = Math.max(0, todayDayNumber - archiveStartDayNumber);
+            return { won, lost, total: totalAvailable };
+        }
+
+        // Load an archive game
+        function loadArchiveGame(dayNumber) {
+            archiveMode.active = true;
+            archiveMode.dayNumber = dayNumber;
+
+            const cheese = getCheeseForDay(dayNumber);
+            const savedState = getArchiveState(dayNumber);
+            const date = dayNumberToDate(dayNumber);
+            const gameNumber = dayNumber + 1;
+
+            // Update banner
+            const banner = document.getElementById('archive-banner');
+            const bannerTitle = document.getElementById('archive-banner-title');
+            const bannerDate = document.getElementById('archive-banner-date');
+            
+            banner.style.display = 'flex';
+            bannerTitle.textContent = `Playing Cheese #${gameNumber}`;
+            bannerDate.textContent = formatDateForDisplay(date);
+
+            // Update game number display
+            document.getElementById('game-number').textContent = `Cheese #${gameNumber}`;
+
+            // Hide archive button when in archive mode
+            document.getElementById('archive-btn').style.display = 'none';
+
+            // Reset or restore game state
+            if (savedState) {
+                gameState = { ...savedState };
+                gameState.dailyCheese = cheese;
+            } else {
+                gameState = {
+                    dailyCheese: cheese,
+                    guesses: [],
+                    maxGuesses: 6,
+                    gameOver: false,
+                    won: false
+                };
+            }
+
+            // Re-render the game
+            document.getElementById('guesses-container').innerHTML = '';
+            renderGuesses();
+            updateGuessCounter();
+            updateKnownClues();
+
+            // Reset guess dots
+            const dots = document.querySelectorAll('.guess-dot');
+            dots.forEach(dot => {
+                dot.classList.remove('correct', 'used');
+            });
+            updateGuessCounter();
+
+            // Handle input state
+            const input = document.getElementById('cheese-input');
+            const guessBtn = document.getElementById('guess-btn');
+            
+            if (gameState.gameOver) {
+                input.disabled = true;
+                guessBtn.disabled = true;
+                if (gameState.won) {
+                    setTimeout(() => showModal(true), 500);
+                } else {
+                    setTimeout(() => showModal(false), 500);
+                }
+            } else {
+                input.disabled = false;
+                guessBtn.disabled = false;
+                input.value = '';
+            }
+
+            // Hide stats section and learn more button for archive games
+            document.getElementById('stats-section').classList.remove('show');
+            document.getElementById('learn-more-container').style.display = 'none';
+
+            // Close the archive modal
+            document.getElementById('archive-modal-overlay').classList.remove('show');
+        }
+
+        // Return to today's game
+        function returnToToday() {
+            archiveMode.active = false;
+            archiveMode.dayNumber = null;
+
+            // Hide banner
+            document.getElementById('archive-banner').style.display = 'none';
+
+            // Show archive button
+            document.getElementById('archive-btn').style.display = '';
+
+            // Reset game state
+            const savedState = localStorage.getItem('daily-rind-state');
+            const savedDate = localStorage.getItem('daily-rind-date');
+            const today = new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            });
+
+            gameState = {
+                dailyCheese: getDailyCheese(),
+                guesses: [],
+                maxGuesses: 6,
+                gameOver: false,
+                won: false
+            };
+
+            if (savedDate === today && savedState) {
+                gameState = JSON.parse(savedState);
+                gameState.dailyCheese = getDailyCheese();
+            }
+
+            // Update game number
+            document.getElementById('game-number').textContent = `Cheese #${getGameNumber()}`;
+
+            // Re-render
+            document.getElementById('guesses-container').innerHTML = '';
+            renderGuesses();
+            updateGuessCounter();
+            updateKnownClues();
+
+            // Reset guess dots
+            const dots = document.querySelectorAll('.guess-dot');
+            dots.forEach(dot => {
+                dot.classList.remove('correct', 'used');
+            });
+            updateGuessCounter();
+
+            // Handle input state
+            const input = document.getElementById('cheese-input');
+            const guessBtn = document.getElementById('guess-btn');
+
+            if (gameState.gameOver) {
+                input.disabled = true;
+                guessBtn.disabled = true;
+                fetchAndDisplayStats();
+                // Show learn more button for completed today's game
+                document.getElementById('learn-more-container').style.display = 'block';
+                if (gameState.won) {
+                    setTimeout(() => showModal(true), 500);
+                } else {
+                    setTimeout(() => showModal(false), 500);
+                }
+            } else {
+                input.disabled = false;
+                guessBtn.disabled = false;
+                input.value = '';
+                // Hide learn more button if today's game not completed
+                document.getElementById('learn-more-container').style.display = 'none';
+            }
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const monthYearLabel = document.getElementById('calendar-month-year');
+            const todayDayNumber = getDayNumber();
+            
+            const year = archiveMode.calendarYear;
+            const month = archiveMode.calendarMonth;
+            
+            // Month names
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            monthYearLabel.textContent = `${monthNames[month]} ${year}`;
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(Date.UTC(year, month, 1)).getUTCDay();
+            const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+            
+            // Get today's date in Pacific time
+            const todayPacific = new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            });
+            const [todayYear, todayMonth, todayDay] = todayPacific.split('-').map(Number);
+            
+            let html = '';
+            
+            // Empty cells for days before first of month
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div class="calendar-day empty"></div>';
+            }
+            
+            // Days of the month
+            // Dec 1, 2025 is day number 700 (days since Jan 1, 2024)
+            const archiveStartDayNumber = dateToDayNumber(2025, 11, 1);
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayNumber = dateToDayNumber(year, month, day);
+                const isToday = year === todayYear && month === (todayMonth - 1) && day === todayDay;
+                const isFuture = dayNumber > todayDayNumber;
+                const isBeforeStart = dayNumber < archiveStartDayNumber;
+                
+                let classes = ['calendar-day'];
+                let clickable = false;
+                
+                if (isToday) {
+                    classes.push('today-active');
+                } else if (isFuture || isBeforeStart) {
+                    classes.push('future');
+                } else {
+                    clickable = true;
+                    const archiveState = getArchiveState(dayNumber);
+                    if (archiveState && archiveState.gameOver) {
+                        if (archiveState.won) {
+                            classes.push('won');
+                        } else {
+                            classes.push('lost');
+                        }
+                    }
+                }
+                
+                html += `<div class="${classes.join(' ')}" ${clickable ? `data-day="${dayNumber}"` : ''}>
+                    <span class="calendar-day-number">${day}</span>
+                </div>`;
+            }
+            
+            grid.innerHTML = html;
+            
+            // Add click handlers
+            grid.querySelectorAll('.calendar-day[data-day]').forEach(dayEl => {
+                dayEl.addEventListener('click', () => {
+                    const dayNumber = parseInt(dayEl.dataset.day);
+                    loadArchiveGame(dayNumber);
+                });
+            });
+            
+            // Update navigation buttons
+            updateCalendarNav();
+        }
+
+        // Update calendar navigation buttons
+        function updateCalendarNav() {
+            const prevBtn = document.getElementById('calendar-prev');
+            const nextBtn = document.getElementById('calendar-next');
+            
+            // Can't go before Dec 2025
+            const canGoPrev = !(archiveMode.calendarYear === 2025 && archiveMode.calendarMonth === 11);
+            
+            // Can't go past current month
+            const todayPacific = new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            });
+            const [todayYear, todayMonth] = todayPacific.split('-').map(Number);
+            const canGoNext = !(archiveMode.calendarYear === todayYear && archiveMode.calendarMonth === todayMonth - 1);
+            
+            prevBtn.disabled = !canGoPrev;
+            nextBtn.disabled = !canGoNext;
+        }
+
+        // Update archive stats display
+        function updateArchiveStats() {
+            const stats = getArchiveStats();
+            document.getElementById('archive-won-count').textContent = stats.won;
+            document.getElementById('archive-lost-count').textContent = stats.lost;
+            document.getElementById('archive-total-count').textContent = stats.total;
+        }
+
+        // Initialize archive modal
+        function initArchiveModal() {
+            const archiveBtn = document.getElementById('archive-btn');
+            const overlay = document.getElementById('archive-modal-overlay');
+            const closeBtn = document.getElementById('archive-modal-close');
+            const prevBtn = document.getElementById('calendar-prev');
+            const nextBtn = document.getElementById('calendar-next');
+            const returnBtn = document.getElementById('return-to-today-btn');
+
+            // Set initial calendar month to current month
+            const todayPacific = new Date().toLocaleDateString('en-CA', { 
+                timeZone: 'America/Los_Angeles' 
+            });
+            const [todayYear, todayMonth] = todayPacific.split('-').map(Number);
+            archiveMode.calendarYear = todayYear;
+            archiveMode.calendarMonth = todayMonth - 1;
+
+            archiveBtn.addEventListener('click', () => {
+                // Reset to current month when opening
+                archiveMode.calendarYear = todayYear;
+                archiveMode.calendarMonth = todayMonth - 1;
+                
+                renderCalendar();
+                updateArchiveStats();
+                overlay.classList.add('show');
+            });
+
+            closeBtn.addEventListener('click', () => {
+                overlay.classList.remove('show');
+            });
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('show');
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                archiveMode.calendarMonth--;
+                if (archiveMode.calendarMonth < 0) {
+                    archiveMode.calendarMonth = 11;
+                    archiveMode.calendarYear--;
+                }
+                renderCalendar();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                archiveMode.calendarMonth++;
+                if (archiveMode.calendarMonth > 11) {
+                    archiveMode.calendarMonth = 0;
+                    archiveMode.calendarYear++;
+                }
+                renderCalendar();
+            });
+
+            returnBtn.addEventListener('click', returnToToday);
+
+            // Escape key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('show')) {
+                    overlay.classList.remove('show');
+                }
+            });
+        }
+
         // Handle feedback form submission with EmailJS
         // TODO: Replace these with your EmailJS credentials from https://emailjs.com
         const EMAILJS_PUBLIC_KEY = 'OJMA7cpmSDGBtMicK';
@@ -4545,6 +5354,7 @@
             initGame();
             initBrowseModal();
             initFlashcardStudy();
+            initArchiveModal();
             initFeedbackForm();
         });
     </script>
